@@ -6,11 +6,20 @@ import java.util.List;
 
 import com.digitalpetri.opcua.nodeset.attributes.*;
 import org.junit.Before;
+import org.opcfoundation.ua.builtintypes.ExpandedNodeId;
+import org.opcfoundation.ua.builtintypes.NodeId;
+import org.opcfoundation.ua.core.NodeClass;
 
 public class UaNodeSetParserTest {
 
     NodeBuilder<Node, Reference> nodeBuilder;
     ReferenceBuilder<Reference> referenceBuilder;
+
+    @Before
+    public void setUp() {
+        nodeBuilder = new TestNodeBuilder();
+        referenceBuilder = new TestReferenceBuilder();
+    }
 
     @org.junit.Test
     public void testParseNodeSet2() throws Exception {
@@ -61,57 +70,58 @@ public class UaNodeSetParserTest {
         System.out.println("Parsed " + nodeSetFilename + " and generated " + nodes.size() + " nodes.");
     }
 
-    @Before
-    public void setUp() {
-        nodeBuilder = new NodeBuilder<Node, Reference>() {
-            @Override
-            public Node buildMethodNode(MethodNodeAttributes attributes, List<Reference> references) {
-                return new Node();
-            }
+    private static class TestNodeBuilder implements NodeBuilder<Node, Reference> {
+        @Override
+        public Node buildMethodNode(MethodNodeAttributes attributes, List<Reference> references) {
+            return new Node();
+        }
 
-            @Override
-            public Node buildObjectNode(ObjectNodeAttributes attributes, List<Reference> references) {
-                return new Node();
-            }
+        @Override
+        public Node buildObjectNode(ObjectNodeAttributes attributes, List<Reference> references) {
+            return new Node();
+        }
 
-            @Override
-            public Node buildReferenceTypeNode(ReferenceTypeNodeAttributes attributes, List<Reference> references) {
-                return new Node();
-            }
+        @Override
+        public Node buildReferenceTypeNode(ReferenceTypeNodeAttributes attributes, List<Reference> references) {
+            return new Node();
+        }
 
-            @Override
-            public Node buildVariableNode(VariableNodeAttributes attributes, List<Reference> references) {
-                return new Node();
-            }
+        @Override
+        public Node buildVariableNode(VariableNodeAttributes attributes, List<Reference> references) {
+            return new Node();
+        }
 
-            @Override
-            public Node buildDataTypeNode(DataTypeNodeAttributes attributes, List<Reference> references) {
-                return new Node();
-            }
+        @Override
+        public Node buildDataTypeNode(DataTypeNodeAttributes attributes, List<Reference> references) {
+            return new Node();
+        }
 
-            @Override
-            public Node buildObjectTypeNode(ObjectTypeNodeAttributes attributes, List<Reference> references) {
-                return new Node();
-            }
+        @Override
+        public Node buildObjectTypeNode(ObjectTypeNodeAttributes attributes, List<Reference> references) {
+            return new Node();
+        }
 
-            @Override
-            public Node buildVariableTypeNode(VariableTypeNodeAttributes attributes, List<Reference> references) {
-                return new Node();
-            }
+        @Override
+        public Node buildVariableTypeNode(VariableTypeNodeAttributes attributes, List<Reference> references) {
+            return new Node();
+        }
 
-            @Override
-            public Node buildViewNode(ViewNodeAttributes attributes, List<Reference> references) {
-                return new Node();
-            }
-        };
+        @Override
+        public Node buildViewNode(ViewNodeAttributes attributes, List<Reference> references) {
+            return new Node();
+        }
+    }
 
-        referenceBuilder = (sourceNodeId, referenceTypeId, targetNodeId, targetNodeClass, forward) -> {
-            Reference reference =
-                    new Reference(sourceNodeId, referenceTypeId, targetNodeId, targetNodeClass, forward);
+    private static class TestReferenceBuilder implements ReferenceBuilder<Reference> {
+        @Override
+        public Reference buildReference(NodeId sourceNodeId,
+                                        NodeId referenceTypeId,
+                                        ExpandedNodeId targetNodeId,
+                                        NodeClass targetNodeClass,
+                                        boolean forward) {
 
-            return reference;
-        };
-
+            return new Reference(sourceNodeId, referenceTypeId, targetNodeId, targetNodeClass, forward);
+        }
     }
 
 }
