@@ -40,6 +40,16 @@ public class ReferenceTypeNodeAttributes {
         return inverseName;
     }
 
+    @Override
+    public String toString() {
+        return "ReferenceTypeNodeAttributes{" +
+                "baseNodeAttributes=" + baseNodeAttributes +
+                ", isAbstract=" + isAbstract +
+                ", symmetric=" + symmetric +
+                ", inverseName=" + inverseName +
+                '}';
+    }
+
     public static ReferenceTypeNodeAttributes fromGenerated(GeneratedUAReferenceType generated) {
         BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.ReferenceType);
 

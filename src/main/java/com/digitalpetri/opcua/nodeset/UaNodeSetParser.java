@@ -5,10 +5,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.digitalpetri.opcua.nodeset.attributes.*;
@@ -30,10 +27,10 @@ public class UaNodeSetParser<NodeType, ReferenceType> {
             StackUtils.getDefaultSerializer(),
             Integer.MAX_VALUE);
 
-    private final Map<String, NodeId> aliases = new HashMap<>();
+    private final Map<String, NodeId> aliasMap = new HashMap<>();
+    private final Map<NodeId, List<ReferenceType>> referencesMap = new HashMap<>();
 
     private final UANodeSet nodeSet;
-    private final Unmarshaller unmarshaller;
     private final Marshaller marshaller;
 
     private final NodeBuilder<NodeType, ReferenceType> nodeBuilder;
@@ -47,15 +44,34 @@ public class UaNodeSetParser<NodeType, ReferenceType> {
         this.referenceBuilder = referenceBuilder;
 
         JAXBContext jaxbContext = JAXBContext.newInstance(ObjectFactory.class);
-
-        unmarshaller = jaxbContext.createUnmarshaller();
         marshaller = jaxbContext.createMarshaller();
 
+        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         nodeSet = UANodeSet.class.cast(unmarshaller.unmarshal(nodeSetXml));
 
         nodeSet.getAliases().getAlias().stream().forEach(a -> {
-            aliases.put(a.getAlias(), NodeId.parseNodeId(a.getValue()));
+            aliasMap.put(a.getAlias(), NodeId.parseNodeId(a.getValue()));
         });
+
+        nodeSet.getUAObjectOrUAVariableOrUAMethod().stream()
+                .forEach(gNode -> {
+                    NodeId sourceNodeId = NodeId.parseNodeId(gNode.getNodeId());
+                    gNode.getReferences().getReference().forEach(gReference -> {
+                        Map<NodeId, ReferenceType> nodeIdReferenceTypeMap = referenceAndInverse(sourceNodeId, gReference);
+
+                        nodeIdReferenceTypeMap.keySet().stream()
+                                .forEach(nodeId -> {
+                                    ReferenceType reference = nodeIdReferenceTypeMap.get(nodeId);
+                                    if (referencesMap.containsKey(nodeId)) {
+                                        referencesMap.get(nodeId).add(reference);
+                                    } else {
+                                        List<ReferenceType> l = new ArrayList<>(1);
+                                        l.add(reference);
+                                        referencesMap.put(nodeId, l);
+                                    }
+                                });
+                    });
+                });
     }
 
     public List<NodeType> parse() {
@@ -67,8 +83,8 @@ public class UaNodeSetParser<NodeType, ReferenceType> {
                 .collect(Collectors.toList());
     }
 
-    public Map<String, NodeId> getAliases() {
-        return aliases;
+    public Map<String, NodeId> getAliasMap() {
+        return aliasMap;
     }
 
     public Marshaller getMarshaller() {
@@ -90,70 +106,67 @@ public class UaNodeSetParser<NodeType, ReferenceType> {
 
     private NodeType dataTypeNode(GeneratedUADataType generated) {
         DataTypeNodeAttributes attributes = DataTypeNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = references(attributes.getBaseNodeAttributes().getNodeId(), generated);
+        List<ReferenceType> references = referencesMap.get(attributes.getBaseNodeAttributes().getNodeId());
 
         return nodeBuilder.buildDataTypeNode(attributes, references);
     }
 
     private NodeType methodNode(GeneratedUAMethod generated) {
         MethodNodeAttributes attributes = MethodNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = references(attributes.getBaseNodeAttributes().getNodeId(), generated);
+        List<ReferenceType> references = referencesMap.get(attributes.getBaseNodeAttributes().getNodeId());
 
         return nodeBuilder.buildMethodNode(attributes, references);
     }
 
     private NodeType objectNode(GeneratedUAObject generated) {
         ObjectNodeAttributes attributes = ObjectNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = references(attributes.getBaseNodeAttributes().getNodeId(), generated);
+        List<ReferenceType> references = referencesMap.get(attributes.getBaseNodeAttributes().getNodeId());
 
         return nodeBuilder.buildObjectNode(attributes, references);
     }
 
     private NodeType objectTypeNode(GeneratedUAObjectType generated) {
         ObjectTypeNodeAttributes attributes = ObjectTypeNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = references(attributes.getBaseNodeAttributes().getNodeId(), generated);
+        List<ReferenceType> references = referencesMap.get(attributes.getBaseNodeAttributes().getNodeId());
 
         return nodeBuilder.buildObjectTypeNode(attributes, references);
     }
 
     private NodeType referenceTypeNode(GeneratedUAReferenceType generated) {
         ReferenceTypeNodeAttributes attributes = ReferenceTypeNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = references(attributes.getBaseNodeAttributes().getNodeId(), generated);
+        List<ReferenceType> references = referencesMap.get(attributes.getBaseNodeAttributes().getNodeId());
 
         return nodeBuilder.buildReferenceTypeNode(attributes, references);
     }
 
     private NodeType variableNode(GeneratedUAVariable generated) {
         VariableNodeAttributes attributes = VariableNodeAttributes.fromGenerated(generated, this);
-        List<ReferenceType> references = references(attributes.getBaseNodeAttributes().getNodeId(), generated);
+        List<ReferenceType> references = referencesMap.get(attributes.getBaseNodeAttributes().getNodeId());
 
         return nodeBuilder.buildVariableNode(attributes, references);
     }
 
     private NodeType variableTypeNode(GeneratedUAVariableType generated) {
         VariableTypeNodeAttributes attributes = VariableTypeNodeAttributes.fromGenerated(generated, this);
-        List<ReferenceType> references = references(attributes.getBaseNodeAttributes().getNodeId(), generated);
+        List<ReferenceType> references = referencesMap.get(attributes.getBaseNodeAttributes().getNodeId());
 
         return nodeBuilder.buildVariableTypeNode(attributes, references);
     }
 
     private NodeType viewNode(GeneratedUAView generated) {
         ViewNodeAttributes attributes = ViewNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = references(attributes.getBaseNodeAttributes().getNodeId(), generated);
+        List<ReferenceType> references = referencesMap.get(attributes.getBaseNodeAttributes().getNodeId());
 
         return nodeBuilder.buildViewNode(attributes, references);
     }
 
-    private List<ReferenceType> references(NodeId sourceNodeId, GeneratedUANode generated) {
-        return generated.getReferences().getReference().stream()
-                .map(gReference -> reference(sourceNodeId, gReference))
-                .collect(Collectors.toList());
-    }
+    private Map<NodeId, ReferenceType> referenceAndInverse(NodeId sourceNodeId, GeneratedReference gReference) {
+        NodeId referenceTypeId = AttributeUtil.parseReferenceTypeId(gReference, aliasMap);
 
-    private ReferenceType reference(NodeId sourceNodeId, GeneratedReference gReference) {
-        NodeId referenceTypeId = AttributeUtil.parseReferenceTypeId(gReference, aliases);
-
-        ExpandedNodeId targetNodeId = new ExpandedNodeId(NodeId.parseNodeId(gReference.getValue()));
+        /*
+         * Create the reference...
+         */
+        NodeId targetNodeId = NodeId.parseNodeId(gReference.getValue());
 
         NodeClass targetNodeClass = nodeSet.getUAObjectOrUAVariableOrUAMethod().stream()
                 .filter(gNode -> gNode.getNodeId().equals(gReference.getValue()))
@@ -163,8 +176,25 @@ public class UaNodeSetParser<NodeType, ReferenceType> {
 
         boolean forward = gReference.isIsForward();
 
-        return referenceBuilder.buildReference(
-                sourceNodeId, referenceTypeId, targetNodeId, targetNodeClass, forward);
+        ReferenceType reference = referenceBuilder.buildReference(
+                sourceNodeId, referenceTypeId, new ExpandedNodeId(targetNodeId), targetNodeClass, forward);
+
+        /*
+         * Create the inverse of the reference...
+         */
+        NodeClass sourceNodeClass = nodeSet.getUAObjectOrUAVariableOrUAMethod().stream()
+                .filter(gNode -> gNode.getNodeId().equals(sourceNodeId.toString()))
+                .findFirst()
+                .map(gNode -> nodeClass(gNode))
+                .orElse(NodeClass.Unspecified);
+
+        ReferenceType inverseReference = referenceBuilder.buildReference(
+                targetNodeId, referenceTypeId, new ExpandedNodeId(sourceNodeId), sourceNodeClass, !forward);
+
+        Map<NodeId, ReferenceType> references = new HashMap<>(2);
+        references.put(sourceNodeId, reference);
+        references.put(NodeId.parseNodeId(gReference.getValue()), inverseReference);
+        return references;
     }
 
     private NodeClass nodeClass(GeneratedUANode gNode) {

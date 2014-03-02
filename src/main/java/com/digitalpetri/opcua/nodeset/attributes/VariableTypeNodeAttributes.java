@@ -9,7 +9,6 @@ import org.opcfoundation.ua.builtintypes.DataValue;
 import org.opcfoundation.ua.builtintypes.NodeId;
 import org.opcfoundation.ua.builtintypes.UnsignedInteger;
 import org.opcfoundation.ua.core.NodeClass;
-import org.opcfoundation.ua.generated.GeneratedUAVariable;
 import org.opcfoundation.ua.generated.GeneratedUAVariableType;
 
 public class VariableTypeNodeAttributes {
@@ -61,11 +60,23 @@ public class VariableTypeNodeAttributes {
         return isAbstract;
     }
 
+    @Override
+    public String toString() {
+        return "VariableTypeNodeAttributes{" +
+                "baseNodeAttributes=" + baseNodeAttributes +
+                ", value=" + value +
+                ", dataType=" + dataType +
+                ", valueRank=" + valueRank +
+                ", arrayDimensions=" + arrayDimensions +
+                ", isAbstract=" + isAbstract +
+                '}';
+    }
+
     public static VariableTypeNodeAttributes fromGenerated(GeneratedUAVariableType generated, UaNodeSetParser parser) {
         BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.VariableType);
 
         Optional<DataValue> value = value(generated.getValue(), parser.getMarshaller());
-        NodeId dataType = AttributeUtil.parseDataType(generated.getDataType(), parser.getAliases());
+        NodeId dataType = AttributeUtil.parseDataType(generated.getDataType(), parser.getAliasMap());
         int valueRank = generated.getValueRank();
         Optional<UnsignedInteger[]> arrayDimensions = Optional.of(new UnsignedInteger[0]); // TODO gNode.getArrayDimensions();
         boolean isAbstract = generated.isIsAbstract();

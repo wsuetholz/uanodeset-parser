@@ -32,6 +32,15 @@ public class ViewNodeAttributes {
         return eventNotifier;
     }
 
+    @Override
+    public String toString() {
+        return "ViewNodeAttributes{" +
+                "baseNodeAttributes=" + baseNodeAttributes +
+                ", containsNoLoops=" + containsNoLoops +
+                ", eventNotifier=" + eventNotifier +
+                '}';
+    }
+
     public static ViewNodeAttributes fromGenerated(GeneratedUAView generated) {
         BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.View);
 

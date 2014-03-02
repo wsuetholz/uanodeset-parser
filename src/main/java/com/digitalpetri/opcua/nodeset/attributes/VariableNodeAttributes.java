@@ -98,7 +98,7 @@ public class VariableNodeAttributes {
         BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.Variable);
 
         DataValue value = value(generated.getValue(), parser.getMarshaller());
-        NodeId dataType = AttributeUtil.parseDataType(generated.getDataType(), parser.getAliases());
+        NodeId dataType = AttributeUtil.parseDataType(generated.getDataType(), parser.getAliasMap());
         int valueRank = generated.getValueRank();
         Optional<UnsignedInteger[]> arrayDimensions = Optional.of(new UnsignedInteger[0]); // TODO gNode.getArrayDimensions();
         UnsignedByte accessLevel = new UnsignedByte(generated.getAccessLevel());

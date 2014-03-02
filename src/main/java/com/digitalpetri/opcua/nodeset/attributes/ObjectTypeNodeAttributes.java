@@ -21,6 +21,14 @@ public class ObjectTypeNodeAttributes {
         return isAbstract;
     }
 
+    @Override
+    public String toString() {
+        return "ObjectTypeNodeAttributes{" +
+                "baseNodeAttributes=" + baseNodeAttributes +
+                ", isAbstract=" + isAbstract +
+                '}';
+    }
+
     public static ObjectTypeNodeAttributes fromGenerated(GeneratedUAObjectType generated) {
         BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.ObjectType);
         boolean isAbstract = generated.isIsAbstract();
