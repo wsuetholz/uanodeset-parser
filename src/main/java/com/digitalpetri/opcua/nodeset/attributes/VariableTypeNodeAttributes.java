@@ -1,9 +1,9 @@
 package com.digitalpetri.opcua.nodeset.attributes;
 
 import javax.xml.bind.Marshaller;
+import java.util.Map;
 import java.util.Optional;
 
-import com.digitalpetri.opcua.nodeset.UaNodeSetParser;
 import com.digitalpetri.opcua.nodeset.util.AttributeUtil;
 import org.opcfoundation.ua.builtintypes.DataValue;
 import org.opcfoundation.ua.builtintypes.NodeId;
@@ -72,11 +72,14 @@ public class VariableTypeNodeAttributes {
                 '}';
     }
 
-    public static VariableTypeNodeAttributes fromGenerated(GeneratedUAVariableType generated, UaNodeSetParser parser) {
+    public static VariableTypeNodeAttributes fromGenerated(GeneratedUAVariableType generated,
+                                                           Marshaller marshaller,
+                                                           Map<String, NodeId> aliasMap) {
+
         BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.VariableType);
 
-        Optional<DataValue> value = value(generated.getValue(), parser.getMarshaller());
-        NodeId dataType = AttributeUtil.parseDataType(generated.getDataType(), parser.getAliasMap());
+        Optional<DataValue> value = value(generated.getValue(), marshaller);
+        NodeId dataType = AttributeUtil.parseDataType(generated.getDataType(), aliasMap);
         int valueRank = generated.getValueRank();
         Optional<UnsignedInteger[]> arrayDimensions = Optional.of(new UnsignedInteger[0]); // TODO gNode.getArrayDimensions();
         boolean isAbstract = generated.isIsAbstract();

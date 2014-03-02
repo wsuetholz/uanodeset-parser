@@ -1,9 +1,9 @@
 package com.digitalpetri.opcua.nodeset.attributes;
 
 import javax.xml.bind.Marshaller;
+import java.util.Map;
 import java.util.Optional;
 
-import com.digitalpetri.opcua.nodeset.UaNodeSetParser;
 import com.digitalpetri.opcua.nodeset.util.AttributeUtil;
 import org.opcfoundation.ua.builtintypes.*;
 import org.opcfoundation.ua.core.NodeClass;
@@ -94,11 +94,14 @@ public class VariableNodeAttributes {
                 '}';
     }
 
-    public static VariableNodeAttributes fromGenerated(GeneratedUAVariable generated, UaNodeSetParser parser) {
+    public static VariableNodeAttributes fromGenerated(GeneratedUAVariable generated,
+                                                       Marshaller marshaller,
+                                                       Map<String, NodeId> aliasMap) {
+
         BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.Variable);
 
-        DataValue value = value(generated.getValue(), parser.getMarshaller());
-        NodeId dataType = AttributeUtil.parseDataType(generated.getDataType(), parser.getAliasMap());
+        DataValue value = value(generated.getValue(), marshaller);
+        NodeId dataType = AttributeUtil.parseDataType(generated.getDataType(), aliasMap);
         int valueRank = generated.getValueRank();
         Optional<UnsignedInteger[]> arrayDimensions = Optional.of(new UnsignedInteger[0]); // TODO gNode.getArrayDimensions();
         UnsignedByte accessLevel = new UnsignedByte(generated.getAccessLevel());

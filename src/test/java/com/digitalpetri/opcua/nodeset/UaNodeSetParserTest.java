@@ -63,11 +63,11 @@ public class UaNodeSetParserTest {
 
     private void parse(String nodeSetFilename) throws JAXBException {
         InputStream nodeSetXml = getClass().getClassLoader().getResourceAsStream(nodeSetFilename);
-        UaNodeSetParser<Node, Reference> parser = new UaNodeSetParser<>(nodeBuilder, referenceBuilder, nodeSetXml);
+        UaNodeSetParser<Node, Reference> parser = new UaNodeSetParser<>(nodeBuilder, referenceBuilder);
 
-        List<Node> nodes = parser.parse();
+        UaNodeSet<Node, Reference> nodeSet = parser.parse(nodeSetXml);
 
-        System.out.println("Parsed " + nodeSetFilename + " and generated " + nodes.size() + " nodes.");
+        System.out.println("Parsed " + nodeSetFilename + " and generated " + nodeSet.getNodeMap().size() + " nodes.");
     }
 
     private static class TestNodeBuilder implements NodeBuilder<Node, Reference> {
