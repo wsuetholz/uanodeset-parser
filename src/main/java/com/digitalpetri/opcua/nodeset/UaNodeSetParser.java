@@ -53,25 +53,24 @@ public class UaNodeSetParser<NodeType, ReferenceType> {
             aliasMap.put(a.getAlias(), NodeId.parseNodeId(a.getValue()));
         });
 
-        nodeSet.getUAObjectOrUAVariableOrUAMethod().stream()
-                .forEach(gNode -> {
-                    NodeId sourceNodeId = NodeId.parseNodeId(gNode.getNodeId());
-                    gNode.getReferences().getReference().forEach(gReference -> {
-                        Map<NodeId, ReferenceType> nodeIdReferenceTypeMap = referenceAndInverse(sourceNodeId, gReference);
+        nodeSet.getUAObjectOrUAVariableOrUAMethod().stream().forEach(gNode -> {
+            NodeId sourceNodeId = NodeId.parseNodeId(gNode.getNodeId());
 
-                        nodeIdReferenceTypeMap.keySet().stream()
-                                .forEach(nodeId -> {
-                                    ReferenceType reference = nodeIdReferenceTypeMap.get(nodeId);
-                                    if (referencesMap.containsKey(nodeId)) {
-                                        referencesMap.get(nodeId).add(reference);
-                                    } else {
-                                        List<ReferenceType> l = new ArrayList<>(1);
-                                        l.add(reference);
-                                        referencesMap.put(nodeId, l);
-                                    }
-                                });
-                    });
+            gNode.getReferences().getReference().forEach(gReference -> {
+                Map<NodeId, ReferenceType> references = referenceAndInverse(sourceNodeId, gReference);
+
+                references.keySet().stream().forEach(nodeId -> {
+                    ReferenceType reference = references.get(nodeId);
+                    if (referencesMap.containsKey(nodeId)) {
+                        referencesMap.get(nodeId).add(reference);
+                    } else {
+                        List<ReferenceType> l = new ArrayList<>(1);
+                        l.add(reference);
+                        referencesMap.put(nodeId, l);
+                    }
                 });
+            });
+        });
     }
 
     public List<NodeType> parse() {
