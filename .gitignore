@@ -8,3 +8,9 @@
 # IntelliJ #
 *.iml
 .idea/*
+
+# Maven #
+target/*
+
+# Generated Sources #
+src/main/generated/*
