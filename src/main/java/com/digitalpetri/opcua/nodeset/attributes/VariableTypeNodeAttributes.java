@@ -13,7 +13,7 @@ import org.opcfoundation.ua.generated.GeneratedUAVariableType;
 
 public class VariableTypeNodeAttributes {
 
-    private final BaseNodeAttributes baseNodeAttributes;
+    private final NodeAttributes nodeAttributes;
 
     private final Optional<DataValue> value;
     private final NodeId dataType;
@@ -21,14 +21,14 @@ public class VariableTypeNodeAttributes {
     private final Optional<UnsignedInteger[]> arrayDimensions;
     private final boolean isAbstract;
 
-    public VariableTypeNodeAttributes(BaseNodeAttributes baseNodeAttributes,
+    public VariableTypeNodeAttributes(NodeAttributes nodeAttributes,
                                       Optional<DataValue> value,
                                       NodeId dataType,
                                       int valueRank,
                                       Optional<UnsignedInteger[]> arrayDimensions,
                                       boolean isAbstract) {
 
-        this.baseNodeAttributes = baseNodeAttributes;
+        this.nodeAttributes = nodeAttributes;
         this.value = value;
         this.dataType = dataType;
         this.valueRank = valueRank;
@@ -36,8 +36,8 @@ public class VariableTypeNodeAttributes {
         this.isAbstract = isAbstract;
     }
 
-    public BaseNodeAttributes getBaseNodeAttributes() {
-        return baseNodeAttributes;
+    public NodeAttributes getNodeAttributes() {
+        return nodeAttributes;
     }
 
     public Optional<DataValue> getValue() {
@@ -63,7 +63,7 @@ public class VariableTypeNodeAttributes {
     @Override
     public String toString() {
         return "VariableTypeNodeAttributes{" +
-                "baseNodeAttributes=" + baseNodeAttributes +
+                "nodeAttributes=" + nodeAttributes +
                 ", value=" + value +
                 ", dataType=" + dataType +
                 ", valueRank=" + valueRank +
@@ -76,7 +76,7 @@ public class VariableTypeNodeAttributes {
                                                            Marshaller marshaller,
                                                            Map<String, NodeId> aliasMap) {
 
-        BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.VariableType);
+        NodeAttributes nodeAttributes = NodeAttributes.fromGenerated(generated, NodeClass.VariableType);
 
         Optional<DataValue> value = value(generated.getValue(), marshaller);
         NodeId dataType = AttributeUtil.parseDataType(generated.getDataType(), aliasMap);
@@ -84,7 +84,7 @@ public class VariableTypeNodeAttributes {
         Optional<UnsignedInteger[]> arrayDimensions = Optional.of(new UnsignedInteger[0]); // TODO gNode.getArrayDimensions();
         boolean isAbstract = generated.isIsAbstract();
 
-        return new VariableTypeNodeAttributes(baseNodeAttributes, value, dataType, valueRank, arrayDimensions, isAbstract);
+        return new VariableTypeNodeAttributes(nodeAttributes, value, dataType, valueRank, arrayDimensions, isAbstract);
     }
 
     private static Optional<DataValue> value(GeneratedUAVariableType.GeneratedValue gValue, Marshaller marshaller) {

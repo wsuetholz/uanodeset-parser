@@ -6,22 +6,22 @@ import org.opcfoundation.ua.generated.GeneratedUAView;
 
 public class ViewNodeAttributes {
 
-    private final BaseNodeAttributes baseNodeAttributes;
+    private final NodeAttributes nodeAttributes;
 
     private final boolean containsNoLoops;
     private final UnsignedByte eventNotifier;
 
-    public ViewNodeAttributes(BaseNodeAttributes baseNodeAttributes,
+    public ViewNodeAttributes(NodeAttributes nodeAttributes,
                               boolean containsNoLoops,
                               UnsignedByte eventNotifier) {
 
-        this.baseNodeAttributes = baseNodeAttributes;
+        this.nodeAttributes = nodeAttributes;
         this.containsNoLoops = containsNoLoops;
         this.eventNotifier = eventNotifier;
     }
 
-    public BaseNodeAttributes getBaseNodeAttributes() {
-        return baseNodeAttributes;
+    public NodeAttributes getNodeAttributes() {
+        return nodeAttributes;
     }
 
     public boolean isContainsNoLoops() {
@@ -35,19 +35,19 @@ public class ViewNodeAttributes {
     @Override
     public String toString() {
         return "ViewNodeAttributes{" +
-                "baseNodeAttributes=" + baseNodeAttributes +
+                "nodeAttributes=" + nodeAttributes +
                 ", containsNoLoops=" + containsNoLoops +
                 ", eventNotifier=" + eventNotifier +
                 '}';
     }
 
     public static ViewNodeAttributes fromGenerated(GeneratedUAView generated) {
-        BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.View);
+        NodeAttributes nodeAttributes = NodeAttributes.fromGenerated(generated, NodeClass.View);
 
         boolean containsNoLoops = generated.isContainsNoLoops();
         UnsignedByte eventNotifier = new UnsignedByte(generated.getEventNotifier());
 
-        return new ViewNodeAttributes(baseNodeAttributes, containsNoLoops, eventNotifier);
+        return new ViewNodeAttributes(nodeAttributes, containsNoLoops, eventNotifier);
     }
 
 }

@@ -92,73 +92,73 @@ public class UaNodeSet<NodeType, ReferenceType> {
 
     private NodeType dataTypeNode(GeneratedUADataType generated) {
         DataTypeNodeAttributes attributes = DataTypeNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = referenceMap.get(attributes.getBaseNodeAttributes().getNodeId());
+        List<ReferenceType> references = referenceMap.get(attributes.getNodeAttributes().getNodeId());
 
         NodeType node = nodeBuilder.buildDataTypeNode(attributes, references);
-        nodeMap.put(attributes.getBaseNodeAttributes().getNodeId(), node);
+        nodeMap.put(attributes.getNodeAttributes().getNodeId(), node);
         return node;
     }
 
     private NodeType methodNode(GeneratedUAMethod generated) {
         MethodNodeAttributes attributes = MethodNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = referenceMap.get(attributes.getBaseNodeAttributes().getNodeId());
+        List<ReferenceType> references = referenceMap.get(attributes.getNodeAttributes().getNodeId());
 
         NodeType node = nodeBuilder.buildMethodNode(attributes, references);
-        nodeMap.put(attributes.getBaseNodeAttributes().getNodeId(), node);
+        nodeMap.put(attributes.getNodeAttributes().getNodeId(), node);
         return node;
     }
 
     private NodeType objectNode(GeneratedUAObject generated) {
         ObjectNodeAttributes attributes = ObjectNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = referenceMap.get(attributes.getBaseNodeAttributes().getNodeId());
+        List<ReferenceType> references = referenceMap.get(attributes.getNodeAttributes().getNodeId());
 
         NodeType node = nodeBuilder.buildObjectNode(attributes, references);
-        nodeMap.put(attributes.getBaseNodeAttributes().getNodeId(), node);
+        nodeMap.put(attributes.getNodeAttributes().getNodeId(), node);
         return node;
     }
 
     private NodeType objectTypeNode(GeneratedUAObjectType generated) {
         ObjectTypeNodeAttributes attributes = ObjectTypeNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = referenceMap.get(attributes.getBaseNodeAttributes().getNodeId());
+        List<ReferenceType> references = referenceMap.get(attributes.getNodeAttributes().getNodeId());
 
         NodeType node = nodeBuilder.buildObjectTypeNode(attributes, references);
-        nodeMap.put(attributes.getBaseNodeAttributes().getNodeId(), node);
+        nodeMap.put(attributes.getNodeAttributes().getNodeId(), node);
         return node;
     }
 
     private NodeType referenceTypeNode(GeneratedUAReferenceType generated) {
         ReferenceTypeNodeAttributes attributes = ReferenceTypeNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = referenceMap.get(attributes.getBaseNodeAttributes().getNodeId());
+        List<ReferenceType> references = referenceMap.get(attributes.getNodeAttributes().getNodeId());
 
         NodeType node = nodeBuilder.buildReferenceTypeNode(attributes, references);
-        nodeMap.put(attributes.getBaseNodeAttributes().getNodeId(), node);
+        nodeMap.put(attributes.getNodeAttributes().getNodeId(), node);
         return node;
     }
 
     private NodeType variableNode(GeneratedUAVariable generated) {
         VariableNodeAttributes attributes = VariableNodeAttributes.fromGenerated(generated, marshaller, aliasMap);
-        List<ReferenceType> references = referenceMap.get(attributes.getBaseNodeAttributes().getNodeId());
+        List<ReferenceType> references = referenceMap.get(attributes.getNodeAttributes().getNodeId());
 
         NodeType node = nodeBuilder.buildVariableNode(attributes, references);
-        nodeMap.put(attributes.getBaseNodeAttributes().getNodeId(), node);
+        nodeMap.put(attributes.getNodeAttributes().getNodeId(), node);
         return node;
     }
 
     private NodeType variableTypeNode(GeneratedUAVariableType generated) {
         VariableTypeNodeAttributes attributes = VariableTypeNodeAttributes.fromGenerated(generated, marshaller, aliasMap);
-        List<ReferenceType> references = referenceMap.get(attributes.getBaseNodeAttributes().getNodeId());
+        List<ReferenceType> references = referenceMap.get(attributes.getNodeAttributes().getNodeId());
 
         NodeType node = nodeBuilder.buildVariableTypeNode(attributes, references);
-        nodeMap.put(attributes.getBaseNodeAttributes().getNodeId(), node);
+        nodeMap.put(attributes.getNodeAttributes().getNodeId(), node);
         return node;
     }
 
     private NodeType viewNode(GeneratedUAView generated) {
         ViewNodeAttributes attributes = ViewNodeAttributes.fromGenerated(generated);
-        List<ReferenceType> references = referenceMap.get(attributes.getBaseNodeAttributes().getNodeId());
+        List<ReferenceType> references = referenceMap.get(attributes.getNodeAttributes().getNodeId());
 
         NodeType node = nodeBuilder.buildViewNode(attributes, references);
-        nodeMap.put(attributes.getBaseNodeAttributes().getNodeId(), node);
+        nodeMap.put(attributes.getNodeAttributes().getNodeId(), node);
         return node;
     }
 

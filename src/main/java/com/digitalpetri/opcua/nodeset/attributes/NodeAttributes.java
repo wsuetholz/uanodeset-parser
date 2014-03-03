@@ -9,7 +9,7 @@ import org.opcfoundation.ua.builtintypes.UnsignedInteger;
 import org.opcfoundation.ua.core.NodeClass;
 import org.opcfoundation.ua.generated.GeneratedUANode;
 
-public class BaseNodeAttributes {
+public class NodeAttributes {
 
     private final NodeId nodeId;
     private final NodeClass nodeClass;
@@ -19,13 +19,13 @@ public class BaseNodeAttributes {
     private final Optional<UnsignedInteger> writeMask;
     private final Optional<UnsignedInteger> userWriteMask;
 
-    public BaseNodeAttributes(NodeId nodeId,
-                              NodeClass nodeClass,
-                              QualifiedName browseName,
-                              LocalizedText displayName,
-                              Optional<LocalizedText> description,
-                              Optional<UnsignedInteger> writeMask,
-                              Optional<UnsignedInteger> userWriteMask) {
+    public NodeAttributes(NodeId nodeId,
+                          NodeClass nodeClass,
+                          QualifiedName browseName,
+                          LocalizedText displayName,
+                          Optional<LocalizedText> description,
+                          Optional<UnsignedInteger> writeMask,
+                          Optional<UnsignedInteger> userWriteMask) {
 
         this.nodeId = nodeId;
         this.nodeClass = nodeClass;
@@ -66,7 +66,7 @@ public class BaseNodeAttributes {
 
     @Override
     public String toString() {
-        return "BaseNodeAttributes{" +
+        return "NodeAttributes{" +
                 "nodeId=" + nodeId +
                 ", nodeClass=" + nodeClass +
                 ", browseName=" + browseName +
@@ -77,7 +77,7 @@ public class BaseNodeAttributes {
                 '}';
     }
 
-    public static BaseNodeAttributes fromGenerated(GeneratedUANode gNode, NodeClass nodeClass) {
+    public static NodeAttributes fromGenerated(GeneratedUANode gNode, NodeClass nodeClass) {
         NodeId nodeId = NodeId.parseNodeId(gNode.getNodeId());
         QualifiedName browseName = QualifiedName.parseQualifiedName(gNode.getBrowseName());
 
@@ -95,7 +95,7 @@ public class BaseNodeAttributes {
         Optional<UnsignedInteger> writeMask = Optional.of(new UnsignedInteger(gNode.getWriteMask()));
         Optional<UnsignedInteger> userWriteMask = Optional.of(new UnsignedInteger(gNode.getUserWriteMask()));
 
-        return new BaseNodeAttributes(nodeId, nodeClass, browseName, displayName, description, writeMask, userWriteMask);
+        return new NodeAttributes(nodeId, nodeClass, browseName, displayName, description, writeMask, userWriteMask);
     }
 
 }

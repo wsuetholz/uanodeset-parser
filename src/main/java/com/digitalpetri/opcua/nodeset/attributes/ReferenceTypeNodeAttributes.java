@@ -8,24 +8,24 @@ import org.opcfoundation.ua.generated.GeneratedUAReferenceType;
 
 public class ReferenceTypeNodeAttributes {
 
-    private final BaseNodeAttributes baseNodeAttributes;
+    private final NodeAttributes nodeAttributes;
     private final boolean isAbstract;
     private final boolean symmetric;
     private final Optional<LocalizedText> inverseName;
 
-    public ReferenceTypeNodeAttributes(BaseNodeAttributes baseNodeAttributes,
+    public ReferenceTypeNodeAttributes(NodeAttributes nodeAttributes,
                                        boolean isAbstract,
                                        boolean symmetric,
                                        Optional<LocalizedText> inverseName) {
 
-        this.baseNodeAttributes = baseNodeAttributes;
+        this.nodeAttributes = nodeAttributes;
         this.isAbstract = isAbstract;
         this.symmetric = symmetric;
         this.inverseName = inverseName;
     }
 
-    public BaseNodeAttributes getBaseNodeAttributes() {
-        return baseNodeAttributes;
+    public NodeAttributes getNodeAttributes() {
+        return nodeAttributes;
     }
 
     public boolean isAbstract() {
@@ -43,7 +43,7 @@ public class ReferenceTypeNodeAttributes {
     @Override
     public String toString() {
         return "ReferenceTypeNodeAttributes{" +
-                "baseNodeAttributes=" + baseNodeAttributes +
+                "nodeAttributes=" + nodeAttributes +
                 ", isAbstract=" + isAbstract +
                 ", symmetric=" + symmetric +
                 ", inverseName=" + inverseName +
@@ -51,7 +51,7 @@ public class ReferenceTypeNodeAttributes {
     }
 
     public static ReferenceTypeNodeAttributes fromGenerated(GeneratedUAReferenceType generated) {
-        BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.ReferenceType);
+        NodeAttributes nodeAttributes = NodeAttributes.fromGenerated(generated, NodeClass.ReferenceType);
 
         boolean isAbstract = generated.isIsAbstract();
         boolean symmetric = generated.isSymmetric();
@@ -62,7 +62,7 @@ public class ReferenceTypeNodeAttributes {
                 .map(localizedText -> Optional.of(localizedText))
                 .orElse(Optional.empty());
 
-        return new ReferenceTypeNodeAttributes(baseNodeAttributes, isAbstract, symmetric, inverseName);
+        return new ReferenceTypeNodeAttributes(nodeAttributes, isAbstract, symmetric, inverseName);
     }
 
 }

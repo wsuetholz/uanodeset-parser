@@ -11,7 +11,7 @@ import org.opcfoundation.ua.generated.GeneratedUAVariable;
 
 public class VariableNodeAttributes {
 
-    private final BaseNodeAttributes baseNodeAttributes;
+    private final NodeAttributes nodeAttributes;
 
     private final DataValue value;
     private final NodeId dataType;
@@ -22,7 +22,7 @@ public class VariableNodeAttributes {
     private final Optional<Double> minimumSamplingInterval;
     private final boolean historizing;
 
-    public VariableNodeAttributes(BaseNodeAttributes baseNodeAttributes,
+    public VariableNodeAttributes(NodeAttributes nodeAttributes,
                                   DataValue value,
                                   NodeId dataType,
                                   int valueRank,
@@ -32,7 +32,7 @@ public class VariableNodeAttributes {
                                   Optional<Double> minimumSamplingInterval,
                                   boolean historizing) {
 
-        this.baseNodeAttributes = baseNodeAttributes;
+        this.nodeAttributes = nodeAttributes;
         this.value = value;
         this.dataType = dataType;
         this.valueRank = valueRank;
@@ -43,8 +43,8 @@ public class VariableNodeAttributes {
         this.historizing = historizing;
     }
 
-    public BaseNodeAttributes getBaseNodeAttributes() {
-        return baseNodeAttributes;
+    public NodeAttributes getNodeAttributes() {
+        return nodeAttributes;
     }
 
     public DataValue getValue() {
@@ -82,7 +82,7 @@ public class VariableNodeAttributes {
     @Override
     public String toString() {
         return "VariableNodeAttributes{" +
-                "baseNodeAttributes=" + baseNodeAttributes +
+                "nodeAttributes=" + nodeAttributes +
                 ", value=" + value +
                 ", dataType=" + dataType +
                 ", valueRank=" + valueRank +
@@ -98,7 +98,7 @@ public class VariableNodeAttributes {
                                                        Marshaller marshaller,
                                                        Map<String, NodeId> aliasMap) {
 
-        BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.Variable);
+        NodeAttributes nodeAttributes = NodeAttributes.fromGenerated(generated, NodeClass.Variable);
 
         DataValue value = value(generated.getValue(), marshaller);
         NodeId dataType = AttributeUtil.parseDataType(generated.getDataType(), aliasMap);
@@ -109,7 +109,7 @@ public class VariableNodeAttributes {
         Optional<Double> minimumSamplingInterval = Optional.of(generated.getMinimumSamplingInterval());
         boolean historizing = generated.isHistorizing();
 
-        return new VariableNodeAttributes(baseNodeAttributes, value, dataType, valueRank, arrayDimensions, accessLevel,
+        return new VariableNodeAttributes(nodeAttributes, value, dataType, valueRank, arrayDimensions, accessLevel,
                 userAccessLevel, minimumSamplingInterval, historizing);
     }
 

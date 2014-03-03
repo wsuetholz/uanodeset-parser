@@ -5,16 +5,16 @@ import org.opcfoundation.ua.generated.GeneratedUADataType;
 
 public class DataTypeNodeAttributes {
 
-    private final BaseNodeAttributes baseNodeAttributes;
+    private final NodeAttributes nodeAttributes;
     private final boolean isAbstract;
 
-    public DataTypeNodeAttributes(BaseNodeAttributes baseNodeAttributes, boolean isAbstract) {
-        this.baseNodeAttributes = baseNodeAttributes;
+    public DataTypeNodeAttributes(NodeAttributes nodeAttributes, boolean isAbstract) {
+        this.nodeAttributes = nodeAttributes;
         this.isAbstract = isAbstract;
     }
 
-    public BaseNodeAttributes getBaseNodeAttributes() {
-        return baseNodeAttributes;
+    public NodeAttributes getNodeAttributes() {
+        return nodeAttributes;
     }
 
     public boolean isAbstract() {
@@ -24,16 +24,16 @@ public class DataTypeNodeAttributes {
     @Override
     public String toString() {
         return "DataTypeNodeAttributes{" +
-                "baseNodeAttributes=" + baseNodeAttributes +
+                "nodeAttributes=" + nodeAttributes +
                 ", isAbstract=" + isAbstract +
                 '}';
     }
 
     public static DataTypeNodeAttributes fromGenerated(GeneratedUADataType generated) {
-        BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.DataType);
+        NodeAttributes nodeAttributes = NodeAttributes.fromGenerated(generated, NodeClass.DataType);
         boolean isAbstract = generated.isIsAbstract();
 
-        return new DataTypeNodeAttributes(baseNodeAttributes, isAbstract);
+        return new DataTypeNodeAttributes(nodeAttributes, isAbstract);
     }
 
 }

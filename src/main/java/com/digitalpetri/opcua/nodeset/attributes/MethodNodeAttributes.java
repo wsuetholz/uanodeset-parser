@@ -5,18 +5,18 @@ import org.opcfoundation.ua.generated.GeneratedUAMethod;
 
 public class MethodNodeAttributes {
 
-    private final BaseNodeAttributes baseNodeAttributes;
+    private final NodeAttributes nodeAttributes;
     private final boolean executable;
     private final boolean userExecutable;
 
-    public MethodNodeAttributes(BaseNodeAttributes baseNodeAttributes, boolean executable, boolean userExecutable) {
-        this.baseNodeAttributes = baseNodeAttributes;
+    public MethodNodeAttributes(NodeAttributes nodeAttributes, boolean executable, boolean userExecutable) {
+        this.nodeAttributes = nodeAttributes;
         this.executable = executable;
         this.userExecutable = userExecutable;
     }
 
-    public BaseNodeAttributes getBaseNodeAttributes() {
-        return baseNodeAttributes;
+    public NodeAttributes getNodeAttributes() {
+        return nodeAttributes;
     }
 
     public boolean isExecutable() {
@@ -30,19 +30,19 @@ public class MethodNodeAttributes {
     @Override
     public String toString() {
         return "MethodNodeAttributes{" +
-                "baseNodeAttributes=" + baseNodeAttributes +
+                "nodeAttributes=" + nodeAttributes +
                 ", executable=" + executable +
                 ", userExecutable=" + userExecutable +
                 '}';
     }
 
     public static MethodNodeAttributes fromGenerated(GeneratedUAMethod generated) {
-        BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.Method);
+        NodeAttributes nodeAttributes = NodeAttributes.fromGenerated(generated, NodeClass.Method);
 
         boolean executable = generated.isExecutable();
         boolean userExecutable = generated.isUserExecutable();
 
-        return new MethodNodeAttributes(baseNodeAttributes, executable, userExecutable);
+        return new MethodNodeAttributes(nodeAttributes, executable, userExecutable);
     }
 
 }

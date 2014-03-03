@@ -6,16 +6,16 @@ import org.opcfoundation.ua.generated.GeneratedUAObject;
 
 public class ObjectNodeAttributes {
 
-    private final BaseNodeAttributes baseNodeAttributes;
+    private final NodeAttributes nodeAttributes;
     private final UnsignedByte eventNotifier;
 
-    public ObjectNodeAttributes(BaseNodeAttributes baseNodeAttributes, UnsignedByte eventNotifier) {
-        this.baseNodeAttributes = baseNodeAttributes;
+    public ObjectNodeAttributes(NodeAttributes nodeAttributes, UnsignedByte eventNotifier) {
+        this.nodeAttributes = nodeAttributes;
         this.eventNotifier = eventNotifier;
     }
 
-    public BaseNodeAttributes getBaseNodeAttributes() {
-        return baseNodeAttributes;
+    public NodeAttributes getNodeAttributes() {
+        return nodeAttributes;
     }
 
     public UnsignedByte getEventNotifier() {
@@ -25,16 +25,16 @@ public class ObjectNodeAttributes {
     @Override
     public String toString() {
         return "ObjectNodeAttributes{" +
-                "baseNodeAttributes=" + baseNodeAttributes +
+                "nodeAttributes=" + nodeAttributes +
                 ", eventNotifier=" + eventNotifier +
                 '}';
     }
 
     public static ObjectNodeAttributes fromGenerated(GeneratedUAObject generated) {
-        BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.Object);
+        NodeAttributes nodeAttributes = NodeAttributes.fromGenerated(generated, NodeClass.Object);
 
         UnsignedByte eventNotifier = new UnsignedByte(generated.getEventNotifier());
 
-        return new ObjectNodeAttributes(baseNodeAttributes, eventNotifier);
+        return new ObjectNodeAttributes(nodeAttributes, eventNotifier);
     }
 }

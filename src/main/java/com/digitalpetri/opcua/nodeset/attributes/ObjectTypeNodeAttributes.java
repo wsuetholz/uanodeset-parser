@@ -5,16 +5,16 @@ import org.opcfoundation.ua.generated.GeneratedUAObjectType;
 
 public class ObjectTypeNodeAttributes {
 
-    private final BaseNodeAttributes baseNodeAttributes;
+    private final NodeAttributes nodeAttributes;
     private final boolean isAbstract;
 
-    public ObjectTypeNodeAttributes(BaseNodeAttributes baseNodeAttributes, boolean isAbstract) {
-        this.baseNodeAttributes = baseNodeAttributes;
+    public ObjectTypeNodeAttributes(NodeAttributes nodeAttributes, boolean isAbstract) {
+        this.nodeAttributes = nodeAttributes;
         this.isAbstract = isAbstract;
     }
 
-    public BaseNodeAttributes getBaseNodeAttributes() {
-        return baseNodeAttributes;
+    public NodeAttributes getNodeAttributes() {
+        return nodeAttributes;
     }
 
     public boolean isAbstract() {
@@ -24,16 +24,16 @@ public class ObjectTypeNodeAttributes {
     @Override
     public String toString() {
         return "ObjectTypeNodeAttributes{" +
-                "baseNodeAttributes=" + baseNodeAttributes +
+                "nodeAttributes=" + nodeAttributes +
                 ", isAbstract=" + isAbstract +
                 '}';
     }
 
     public static ObjectTypeNodeAttributes fromGenerated(GeneratedUAObjectType generated) {
-        BaseNodeAttributes baseNodeAttributes = BaseNodeAttributes.fromGenerated(generated, NodeClass.ObjectType);
+        NodeAttributes nodeAttributes = NodeAttributes.fromGenerated(generated, NodeClass.ObjectType);
         boolean isAbstract = generated.isIsAbstract();
 
-        return new ObjectTypeNodeAttributes(baseNodeAttributes, isAbstract);
+        return new ObjectTypeNodeAttributes(nodeAttributes, isAbstract);
     }
 
 }
