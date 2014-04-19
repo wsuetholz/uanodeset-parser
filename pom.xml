@@ -14,7 +14,7 @@
 
     <scm>
         <url>https://github.com/digitalpetri/uanodeset-parser</url>
-        <connection>scm:git:git://github.com/digitalpetri/uanodeset-parser.git</connection>
+        <connection>scm:git:git@github.com:digitalpetri/uanodeset-parser.git</connection>
     </scm>
 
     <developers>
