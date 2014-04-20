@@ -13,8 +13,8 @@
     <scm>
         <url>https://github.com/digitalpetri/uanodeset-parser</url>
         <connection>scm:git:git@github.com:digitalpetri/uanodeset-parser.git</connection>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <developers>
         <developer>
