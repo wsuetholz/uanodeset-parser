@@ -1,4 +1,4 @@
-package com.digitalpetri.opcua.nodeset;
+package com.inductiveautomation.opcua.nodeset;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -9,12 +9,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.digitalpetri.opcua.nodeset.attributes.*;
-import com.digitalpetri.opcua.nodeset.util.AttributeUtil;
-import org.opcfoundation.ua.builtintypes.ExpandedNodeId;
-import org.opcfoundation.ua.builtintypes.NodeId;
-import org.opcfoundation.ua.core.NodeClass;
-import org.opcfoundation.ua.generated.*;
+import com.inductiveautomation.opcua.nodeset.attributes.DataTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.MethodNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ObjectNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ObjectTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ReferenceTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.VariableNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.VariableTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ViewNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.util.AttributeUtil;
+import com.inductiveautomation.opcua.stack.core.types.builtin.NodeId;
+import com.inductiveautomation.opcua.stack.core.types.enumerated.NodeClass;
+import org.opcfoundation.ua.generated.GeneratedReference;
+import org.opcfoundation.ua.generated.GeneratedUADataType;
+import org.opcfoundation.ua.generated.GeneratedUAMethod;
+import org.opcfoundation.ua.generated.GeneratedUANode;
+import org.opcfoundation.ua.generated.GeneratedUAObject;
+import org.opcfoundation.ua.generated.GeneratedUAObjectType;
+import org.opcfoundation.ua.generated.GeneratedUAReferenceType;
+import org.opcfoundation.ua.generated.GeneratedUAVariable;
+import org.opcfoundation.ua.generated.GeneratedUAVariableType;
+import org.opcfoundation.ua.generated.GeneratedUAView;
+import org.opcfoundation.ua.generated.ObjectFactory;
+import org.opcfoundation.ua.generated.UANodeSet;
 
 public class UaNodeSet<NodeType, ReferenceType> {
 
@@ -40,11 +57,11 @@ public class UaNodeSet<NodeType, ReferenceType> {
         nodeSet = UANodeSet.class.cast(jaxbContext.createUnmarshaller().unmarshal(nodeSetXml));
 
         nodeSet.getAliases().getAlias().stream().forEach(a -> {
-            aliasMap.put(a.getAlias(), NodeId.parseNodeId(a.getValue()));
+            aliasMap.put(a.getAlias(), NodeId.parse(a.getValue()));
         });
 
         nodeSet.getUAObjectOrUAVariableOrUAMethod().stream().forEach(gNode -> {
-            NodeId sourceNodeId = NodeId.parseNodeId(gNode.getNodeId());
+            NodeId sourceNodeId = NodeId.parse(gNode.getNodeId());
 
             gNode.getReferences().getReference().forEach(gReference -> {
                 Map<NodeId, ReferenceType> references = referenceAndInverse(sourceNodeId, gReference);
@@ -168,7 +185,7 @@ public class UaNodeSet<NodeType, ReferenceType> {
         /*
          * Create the reference...
          */
-        NodeId targetNodeId = NodeId.parseNodeId(gReference.getValue());
+        NodeId targetNodeId = NodeId.parse(gReference.getValue());
 
         NodeClass targetNodeClass = nodeSet.getUAObjectOrUAVariableOrUAMethod().stream()
                 .filter(gNode -> gNode.getNodeId().equals(gReference.getValue()))
@@ -179,23 +196,23 @@ public class UaNodeSet<NodeType, ReferenceType> {
         boolean forward = gReference.isIsForward();
 
         ReferenceType reference = referenceBuilder.buildReference(
-                sourceNodeId, referenceTypeId, new ExpandedNodeId(targetNodeId), targetNodeClass, forward);
+                sourceNodeId, referenceTypeId, targetNodeId.expanded(), targetNodeClass, forward);
 
         /*
          * Create the inverse of the reference...
          */
         NodeClass sourceNodeClass = nodeSet.getUAObjectOrUAVariableOrUAMethod().stream()
-                .filter(gNode -> gNode.getNodeId().equals(sourceNodeId.toString()))
+                .filter(gNode -> NodeId.parse(gNode.getNodeId()) != null)
                 .findFirst()
                 .map(this::nodeClass)
                 .orElse(NodeClass.Unspecified);
 
         ReferenceType inverseReference = referenceBuilder.buildReference(
-                targetNodeId, referenceTypeId, new ExpandedNodeId(sourceNodeId), sourceNodeClass, !forward);
+                targetNodeId, referenceTypeId, sourceNodeId.expanded(), sourceNodeClass, !forward);
 
         Map<NodeId, ReferenceType> references = new HashMap<>(2);
         references.put(sourceNodeId, reference);
-        references.put(NodeId.parseNodeId(gReference.getValue()), inverseReference);
+        references.put(NodeId.parse(gReference.getValue()), inverseReference);
         return references;
     }
 

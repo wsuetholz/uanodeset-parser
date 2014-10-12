@@ -1,8 +1,8 @@
-package com.digitalpetri.opcua.nodeset;
+package com.inductiveautomation.opcua.nodeset;
 
-import org.opcfoundation.ua.builtintypes.ExpandedNodeId;
-import org.opcfoundation.ua.builtintypes.NodeId;
-import org.opcfoundation.ua.core.NodeClass;
+import com.inductiveautomation.opcua.stack.core.types.builtin.ExpandedNodeId;
+import com.inductiveautomation.opcua.stack.core.types.builtin.NodeId;
+import com.inductiveautomation.opcua.stack.core.types.enumerated.NodeClass;
 
 public class Reference {
 

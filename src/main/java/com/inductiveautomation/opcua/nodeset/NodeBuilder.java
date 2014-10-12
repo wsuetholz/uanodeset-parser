@@ -1,8 +1,15 @@
-package com.digitalpetri.opcua.nodeset;
+package com.inductiveautomation.opcua.nodeset;
 
 import java.util.List;
 
-import com.digitalpetri.opcua.nodeset.attributes.*;
+import com.inductiveautomation.opcua.nodeset.attributes.DataTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.MethodNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ObjectNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ObjectTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ReferenceTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.VariableNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.VariableTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ViewNodeAttributes;
 
 public interface NodeBuilder<NodeType, ReferenceType> {
 

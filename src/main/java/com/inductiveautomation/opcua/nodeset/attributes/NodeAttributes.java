@@ -1,12 +1,11 @@
-package com.digitalpetri.opcua.nodeset.attributes;
+package com.inductiveautomation.opcua.nodeset.attributes;
 
 import java.util.Optional;
 
-import org.opcfoundation.ua.builtintypes.LocalizedText;
-import org.opcfoundation.ua.builtintypes.NodeId;
-import org.opcfoundation.ua.builtintypes.QualifiedName;
-import org.opcfoundation.ua.builtintypes.UnsignedInteger;
-import org.opcfoundation.ua.core.NodeClass;
+import com.inductiveautomation.opcua.stack.core.types.builtin.LocalizedText;
+import com.inductiveautomation.opcua.stack.core.types.builtin.NodeId;
+import com.inductiveautomation.opcua.stack.core.types.builtin.QualifiedName;
+import com.inductiveautomation.opcua.stack.core.types.enumerated.NodeClass;
 import org.opcfoundation.ua.generated.GeneratedUANode;
 
 public class NodeAttributes {
@@ -16,16 +15,16 @@ public class NodeAttributes {
     private final QualifiedName browseName;
     private final LocalizedText displayName;
     private final Optional<LocalizedText> description;
-    private final Optional<UnsignedInteger> writeMask;
-    private final Optional<UnsignedInteger> userWriteMask;
+    private final Optional<Long> writeMask;
+    private final Optional<Long> userWriteMask;
 
     public NodeAttributes(NodeId nodeId,
                           NodeClass nodeClass,
                           QualifiedName browseName,
                           LocalizedText displayName,
                           Optional<LocalizedText> description,
-                          Optional<UnsignedInteger> writeMask,
-                          Optional<UnsignedInteger> userWriteMask) {
+                          Optional<Long> writeMask,
+                          Optional<Long> userWriteMask) {
 
         this.nodeId = nodeId;
         this.nodeClass = nodeClass;
@@ -56,11 +55,11 @@ public class NodeAttributes {
         return description;
     }
 
-    public Optional<UnsignedInteger> getWriteMask() {
+    public Optional<Long> getWriteMask() {
         return writeMask;
     }
 
-    public Optional<UnsignedInteger> getUserWriteMask() {
+    public Optional<Long> getUserWriteMask() {
         return userWriteMask;
     }
 
@@ -78,8 +77,8 @@ public class NodeAttributes {
     }
 
     public static NodeAttributes fromGenerated(GeneratedUANode gNode, NodeClass nodeClass) {
-        NodeId nodeId = NodeId.parseNodeId(gNode.getNodeId());
-        QualifiedName browseName = QualifiedName.parseQualifiedName(gNode.getBrowseName());
+        NodeId nodeId = NodeId.parse(gNode.getNodeId());
+        QualifiedName browseName = QualifiedName.parse(gNode.getBrowseName());
 
         LocalizedText displayName = gNode.getDisplayName().stream()
                 .findFirst()
@@ -92,8 +91,8 @@ public class NodeAttributes {
                 .map(localizedText -> Optional.of(localizedText))
                 .orElse(Optional.empty());
 
-        Optional<UnsignedInteger> writeMask = Optional.of(new UnsignedInteger(gNode.getWriteMask()));
-        Optional<UnsignedInteger> userWriteMask = Optional.of(new UnsignedInteger(gNode.getUserWriteMask()));
+        Optional<Long> writeMask = Optional.of(gNode.getWriteMask());
+        Optional<Long> userWriteMask = Optional.of(gNode.getUserWriteMask());
 
         return new NodeAttributes(nodeId, nodeClass, browseName, displayName, description, writeMask, userWriteMask);
     }

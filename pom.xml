@@ -2,17 +2,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.digitalpetri.opcua</groupId>
+    <groupId>com.inductiveautomation.opcua</groupId>
     <artifactId>uanodeset-parser</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>UANodeSet XML Parser</name>
     <description>A parser and node-generator for XML files conforming to the UANodeSet schema. See http://opcfoundation.org/UA/schemas/1.02/UANodeSet.xsd.</description>
-    <url>https://github.com/digitalpetri/uanodeset-parser</url>
+    <url>https://github.com/inductiveautomation/uanodeset-parser</url>
 
     <scm>
-        <url>https://github.com/digitalpetri/uanodeset-parser</url>
-        <connection>scm:git:git@github.com:digitalpetri/uanodeset-parser.git</connection>
+        <url>https://github.com/inductiveautomation/uanodeset-parser</url>
+        <connection>scm:git:git@github.com:inductiveautomation/uanodeset-parser.git</connection>
         <tag>HEAD</tag>
     </scm>
 
@@ -91,9 +91,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.opcfoundation.opcua</groupId>
-            <artifactId>Opc.Ua.Stack</artifactId>
-            <version>1.02.334.9</version>
+            <groupId>com.inductiveautomation.opcua</groupId>
+            <artifactId>stack-core</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>

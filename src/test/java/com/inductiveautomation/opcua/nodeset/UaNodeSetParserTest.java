@@ -1,14 +1,21 @@
-package com.digitalpetri.opcua.nodeset;
+package com.inductiveautomation.opcua.nodeset;
 
 import javax.xml.bind.JAXBException;
 import java.io.InputStream;
 import java.util.List;
 
-import com.digitalpetri.opcua.nodeset.attributes.*;
+import com.inductiveautomation.opcua.nodeset.attributes.DataTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.MethodNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ObjectNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ObjectTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ReferenceTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.VariableNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.VariableTypeNodeAttributes;
+import com.inductiveautomation.opcua.nodeset.attributes.ViewNodeAttributes;
+import com.inductiveautomation.opcua.stack.core.types.builtin.ExpandedNodeId;
+import com.inductiveautomation.opcua.stack.core.types.builtin.NodeId;
+import com.inductiveautomation.opcua.stack.core.types.enumerated.NodeClass;
 import org.junit.Before;
-import org.opcfoundation.ua.builtintypes.ExpandedNodeId;
-import org.opcfoundation.ua.builtintypes.NodeId;
-import org.opcfoundation.ua.core.NodeClass;
 
 public class UaNodeSetParserTest {
 

@@ -1,15 +1,14 @@
-package com.digitalpetri.opcua.nodeset.attributes;
+package com.inductiveautomation.opcua.nodeset.attributes;
 
-import org.opcfoundation.ua.builtintypes.UnsignedByte;
-import org.opcfoundation.ua.core.NodeClass;
+import com.inductiveautomation.opcua.stack.core.types.enumerated.NodeClass;
 import org.opcfoundation.ua.generated.GeneratedUAObject;
 
 public class ObjectNodeAttributes {
 
     private final NodeAttributes nodeAttributes;
-    private final UnsignedByte eventNotifier;
+    private final short eventNotifier;
 
-    public ObjectNodeAttributes(NodeAttributes nodeAttributes, UnsignedByte eventNotifier) {
+    public ObjectNodeAttributes(NodeAttributes nodeAttributes, short eventNotifier) {
         this.nodeAttributes = nodeAttributes;
         this.eventNotifier = eventNotifier;
     }
@@ -18,7 +17,7 @@ public class ObjectNodeAttributes {
         return nodeAttributes;
     }
 
-    public UnsignedByte getEventNotifier() {
+    public short getEventNotifier() {
         return eventNotifier;
     }
 
@@ -33,8 +32,9 @@ public class ObjectNodeAttributes {
     public static ObjectNodeAttributes fromGenerated(GeneratedUAObject generated) {
         NodeAttributes nodeAttributes = NodeAttributes.fromGenerated(generated, NodeClass.Object);
 
-        UnsignedByte eventNotifier = new UnsignedByte(generated.getEventNotifier());
+        short eventNotifier = generated.getEventNotifier();
 
         return new ObjectNodeAttributes(nodeAttributes, eventNotifier);
     }
+
 }

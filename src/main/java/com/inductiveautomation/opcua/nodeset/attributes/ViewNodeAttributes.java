@@ -1,7 +1,6 @@
-package com.digitalpetri.opcua.nodeset.attributes;
+package com.inductiveautomation.opcua.nodeset.attributes;
 
-import org.opcfoundation.ua.builtintypes.UnsignedByte;
-import org.opcfoundation.ua.core.NodeClass;
+import com.inductiveautomation.opcua.stack.core.types.enumerated.NodeClass;
 import org.opcfoundation.ua.generated.GeneratedUAView;
 
 public class ViewNodeAttributes {
@@ -9,11 +8,11 @@ public class ViewNodeAttributes {
     private final NodeAttributes nodeAttributes;
 
     private final boolean containsNoLoops;
-    private final UnsignedByte eventNotifier;
+    private final short eventNotifier;
 
     public ViewNodeAttributes(NodeAttributes nodeAttributes,
                               boolean containsNoLoops,
-                              UnsignedByte eventNotifier) {
+                              short eventNotifier) {
 
         this.nodeAttributes = nodeAttributes;
         this.containsNoLoops = containsNoLoops;
@@ -28,7 +27,7 @@ public class ViewNodeAttributes {
         return containsNoLoops;
     }
 
-    public UnsignedByte getEventNotifier() {
+    public short getEventNotifier() {
         return eventNotifier;
     }
 
@@ -45,7 +44,7 @@ public class ViewNodeAttributes {
         NodeAttributes nodeAttributes = NodeAttributes.fromGenerated(generated, NodeClass.View);
 
         boolean containsNoLoops = generated.isContainsNoLoops();
-        UnsignedByte eventNotifier = new UnsignedByte(generated.getEventNotifier());
+        short eventNotifier = generated.getEventNotifier();
 
         return new ViewNodeAttributes(nodeAttributes, containsNoLoops, eventNotifier);
     }

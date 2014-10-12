@@ -1,9 +1,9 @@
-package com.digitalpetri.opcua.nodeset.attributes;
+package com.inductiveautomation.opcua.nodeset.attributes;
 
 import java.util.Optional;
 
-import org.opcfoundation.ua.builtintypes.LocalizedText;
-import org.opcfoundation.ua.core.NodeClass;
+import com.inductiveautomation.opcua.stack.core.types.builtin.LocalizedText;
+import com.inductiveautomation.opcua.stack.core.types.enumerated.NodeClass;
 import org.opcfoundation.ua.generated.GeneratedUAReferenceType;
 
 public class ReferenceTypeNodeAttributes {

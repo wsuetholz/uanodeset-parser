@@ -1,6 +1,6 @@
-package com.digitalpetri.opcua.nodeset.attributes;
+package com.inductiveautomation.opcua.nodeset.attributes;
 
-import org.opcfoundation.ua.core.NodeClass;
+import com.inductiveautomation.opcua.stack.core.types.enumerated.NodeClass;
 import org.opcfoundation.ua.generated.GeneratedUADataType;
 
 public class DataTypeNodeAttributes {

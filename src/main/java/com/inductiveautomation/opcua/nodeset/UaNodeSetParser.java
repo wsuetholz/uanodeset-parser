@@ -1,4 +1,4 @@
-package com.digitalpetri.opcua.nodeset;
+package com.inductiveautomation.opcua.nodeset;
 
 import javax.xml.bind.JAXBException;
 import java.io.InputStream;

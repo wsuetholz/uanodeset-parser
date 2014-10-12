@@ -1,12 +1,14 @@
-package com.digitalpetri.opcua.nodeset.attributes;
+package com.inductiveautomation.opcua.nodeset.attributes;
 
 import javax.xml.bind.Marshaller;
 import java.util.Map;
 import java.util.Optional;
 
-import com.digitalpetri.opcua.nodeset.util.AttributeUtil;
-import org.opcfoundation.ua.builtintypes.*;
-import org.opcfoundation.ua.core.NodeClass;
+import com.inductiveautomation.opcua.nodeset.util.AttributeUtil;
+import com.inductiveautomation.opcua.stack.core.types.builtin.DataValue;
+import com.inductiveautomation.opcua.stack.core.types.builtin.NodeId;
+import com.inductiveautomation.opcua.stack.core.types.builtin.Variant;
+import com.inductiveautomation.opcua.stack.core.types.enumerated.NodeClass;
 import org.opcfoundation.ua.generated.GeneratedUAVariable;
 
 public class VariableNodeAttributes {
@@ -16,9 +18,9 @@ public class VariableNodeAttributes {
     private final DataValue value;
     private final NodeId dataType;
     private final int valueRank;
-    private final Optional<UnsignedInteger[]> arrayDimensions;
-    private final UnsignedByte accessLevel;
-    private final UnsignedByte userAccessLevel;
+    private final Optional<Long[]> arrayDimensions;
+    private final Short accessLevel;
+    private final Short userAccessLevel;
     private final Optional<Double> minimumSamplingInterval;
     private final boolean historizing;
 
@@ -26,9 +28,9 @@ public class VariableNodeAttributes {
                                   DataValue value,
                                   NodeId dataType,
                                   int valueRank,
-                                  Optional<UnsignedInteger[]> arrayDimensions,
-                                  UnsignedByte accessLevel,
-                                  UnsignedByte userAccessLevel,
+                                  Optional<Long[]> arrayDimensions,
+                                  Short accessLevel,
+                                  Short userAccessLevel,
                                   Optional<Double> minimumSamplingInterval,
                                   boolean historizing) {
 
@@ -59,15 +61,15 @@ public class VariableNodeAttributes {
         return valueRank;
     }
 
-    public Optional<UnsignedInteger[]> getArrayDimensions() {
+    public Optional<Long[]> getArrayDimensions() {
         return arrayDimensions;
     }
 
-    public UnsignedByte getAccessLevel() {
+    public Short getAccessLevel() {
         return accessLevel;
     }
 
-    public UnsignedByte getUserAccessLevel() {
+    public Short getUserAccessLevel() {
         return userAccessLevel;
     }
 
@@ -103,9 +105,9 @@ public class VariableNodeAttributes {
         DataValue value = value(generated.getValue(), marshaller);
         NodeId dataType = AttributeUtil.parseDataType(generated.getDataType(), aliasMap);
         int valueRank = generated.getValueRank();
-        Optional<UnsignedInteger[]> arrayDimensions = Optional.of(new UnsignedInteger[0]); // TODO gNode.getArrayDimensions();
-        UnsignedByte accessLevel = new UnsignedByte(generated.getAccessLevel());
-        UnsignedByte userAccessLevel = new UnsignedByte(generated.getUserAccessLevel());
+        Optional<Long[]> arrayDimensions = Optional.of(new Long[0]); // TODO gNode.getArrayDimensions();
+        Short accessLevel = generated.getAccessLevel();
+        Short userAccessLevel = generated.getUserAccessLevel();
         Optional<Double> minimumSamplingInterval = Optional.of(generated.getMinimumSamplingInterval());
         boolean historizing = generated.isHistorizing();
 
@@ -114,7 +116,7 @@ public class VariableNodeAttributes {
     }
 
     private static DataValue value(GeneratedUAVariable.GeneratedValue gValue, Marshaller marshaller) {
-        if (gValue == null) return new DataValue(Variant.NULL);
+        if (gValue == null) return new DataValue(Variant.NullValue);
 
         return AttributeUtil.parseValue(gValue.getAny(), marshaller);
     }
