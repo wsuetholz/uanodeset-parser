@@ -5,8 +5,11 @@ import java.util.Optional;
 import com.inductiveautomation.opcua.stack.core.types.builtin.LocalizedText;
 import com.inductiveautomation.opcua.stack.core.types.builtin.NodeId;
 import com.inductiveautomation.opcua.stack.core.types.builtin.QualifiedName;
+import com.inductiveautomation.opcua.stack.core.types.builtin.unsigned.UInteger;
 import com.inductiveautomation.opcua.stack.core.types.enumerated.NodeClass;
 import org.opcfoundation.ua.generated.GeneratedUANode;
+
+import static com.inductiveautomation.opcua.stack.core.types.builtin.unsigned.Unsigned.uint;
 
 public class NodeAttributes {
 
@@ -15,16 +18,16 @@ public class NodeAttributes {
     private final QualifiedName browseName;
     private final LocalizedText displayName;
     private final Optional<LocalizedText> description;
-    private final Optional<Long> writeMask;
-    private final Optional<Long> userWriteMask;
+    private final Optional<UInteger> writeMask;
+    private final Optional<UInteger> userWriteMask;
 
     public NodeAttributes(NodeId nodeId,
                           NodeClass nodeClass,
                           QualifiedName browseName,
                           LocalizedText displayName,
                           Optional<LocalizedText> description,
-                          Optional<Long> writeMask,
-                          Optional<Long> userWriteMask) {
+                          Optional<UInteger> writeMask,
+                          Optional<UInteger> userWriteMask) {
 
         this.nodeId = nodeId;
         this.nodeClass = nodeClass;
@@ -55,11 +58,11 @@ public class NodeAttributes {
         return description;
     }
 
-    public Optional<Long> getWriteMask() {
+    public Optional<UInteger> getWriteMask() {
         return writeMask;
     }
 
-    public Optional<Long> getUserWriteMask() {
+    public Optional<UInteger> getUserWriteMask() {
         return userWriteMask;
     }
 
@@ -91,8 +94,8 @@ public class NodeAttributes {
                 .map(localizedText -> Optional.of(localizedText))
                 .orElse(Optional.empty());
 
-        Optional<Long> writeMask = Optional.of(gNode.getWriteMask());
-        Optional<Long> userWriteMask = Optional.of(gNode.getUserWriteMask());
+        Optional<UInteger> writeMask = Optional.of(uint(gNode.getWriteMask()));
+        Optional<UInteger> userWriteMask = Optional.of(uint(gNode.getUserWriteMask()));
 
         return new NodeAttributes(nodeId, nodeClass, browseName, displayName, description, writeMask, userWriteMask);
     }
