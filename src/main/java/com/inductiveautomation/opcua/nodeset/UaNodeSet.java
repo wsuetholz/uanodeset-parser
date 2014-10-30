@@ -79,7 +79,17 @@ public class UaNodeSet<NodeType, ReferenceType> {
             });
         });
 
-        nodeSet.getUAObjectOrUAVariableOrUAMethod().stream().forEach(this::buildNode);
+        nodeSet.getUAObjectOrUAVariableOrUAMethod().stream()
+                .filter(gNode -> gNode instanceof GeneratedUAVariableType)
+                .forEach(this::buildNode);
+
+        nodeSet.getUAObjectOrUAVariableOrUAMethod().stream()
+                .filter(gNode -> gNode instanceof GeneratedUAObjectType)
+                .forEach(this::buildNode);
+
+        nodeSet.getUAObjectOrUAVariableOrUAMethod().stream()
+                .filter(gNode -> !(gNode instanceof GeneratedUAVariableType) && !(gNode instanceof GeneratedUAObjectType))
+                .forEach(this::buildNode);
     }
 
     public Map<String, NodeId> getAliasMap() {
@@ -129,7 +139,7 @@ public class UaNodeSet<NodeType, ReferenceType> {
         ObjectNodeAttributes attributes = ObjectNodeAttributes.fromGenerated(generated);
         List<ReferenceType> references = referenceMap.get(attributes.getNodeAttributes().getNodeId());
 
-        NodeType node = nodeBuilder.buildObjectNode(attributes, references);
+        NodeType node = nodeBuilder.buildObjectNode(attributes, references, nodeMap);
         nodeMap.put(attributes.getNodeAttributes().getNodeId(), node);
         return node;
     }
@@ -156,7 +166,7 @@ public class UaNodeSet<NodeType, ReferenceType> {
         VariableNodeAttributes attributes = VariableNodeAttributes.fromGenerated(generated, marshaller, aliasMap);
         List<ReferenceType> references = referenceMap.get(attributes.getNodeAttributes().getNodeId());
 
-        NodeType node = nodeBuilder.buildVariableNode(attributes, references);
+        NodeType node = nodeBuilder.buildVariableNode(attributes, references, nodeMap);
         nodeMap.put(attributes.getNodeAttributes().getNodeId(), node);
         return node;
     }
@@ -202,7 +212,10 @@ public class UaNodeSet<NodeType, ReferenceType> {
          * Create the inverse of the reference...
          */
         NodeClass sourceNodeClass = nodeSet.getUAObjectOrUAVariableOrUAMethod().stream()
-                .filter(gNode -> NodeId.parse(gNode.getNodeId()) != null)
+                .filter(gNode -> {
+                    NodeId nodeId = NodeId.parse(gNode.getNodeId());
+                    return nodeId != null && nodeId.equals(sourceNodeId);
+                })
                 .findFirst()
                 .map(this::nodeClass)
                 .orElse(NodeClass.Unspecified);

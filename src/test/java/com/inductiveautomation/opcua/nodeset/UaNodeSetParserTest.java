@@ -3,6 +3,7 @@ package com.inductiveautomation.opcua.nodeset;
 import javax.xml.bind.JAXBException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import com.inductiveautomation.opcua.nodeset.attributes.DataTypeNodeAttributes;
 import com.inductiveautomation.opcua.nodeset.attributes.MethodNodeAttributes;
@@ -84,7 +85,7 @@ public class UaNodeSetParserTest {
         }
 
         @Override
-        public Node buildObjectNode(ObjectNodeAttributes attributes, List<Reference> references) {
+        public Node buildObjectNode(ObjectNodeAttributes attributes, List<Reference> references, Map<NodeId, Node> nodeMap) {
             return new Node();
         }
 
@@ -94,7 +95,7 @@ public class UaNodeSetParserTest {
         }
 
         @Override
-        public Node buildVariableNode(VariableNodeAttributes attributes, List<Reference> references) {
+        public Node buildVariableNode(VariableNodeAttributes attributes, List<Reference> references, Map<NodeId, Node> nodeMap) {
             return new Node();
         }
 
